@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About AURELIVA | Premium Online Shopping</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    :root {
+      --primary: #1a1a1a;
+      --secondary: #555555;
+      --accent: #8b5a2b;
+      --light: #f8f8f8;
+      --white: #ffffff;
+      --highlight: #e8e8e8;
+      --transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      color: var(--primary);
+      background-color: var(--white);
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Header */
+    header {
+      background-color: var(--white);
+      padding: 1.8rem 4rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 1px solid var(--highlight);
+      transition: var(--transition);
+    }
+
+    header.scrolled {
+      padding: 1.2rem 4rem;
+      box-shadow: 0 2px 30px rgba(0, 0, 0, 0.05);
+    }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 1.8rem;
+      color: var(--primary);
+      text-decoration: none;
+      letter-spacing: 1px;
+    }
+
+    .logo span {
+      color: var(--accent);
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 2.5rem;
+    }
+
+    .nav-link {
+      font-weight: 400;
+      color: var(--secondary);
+      text-decoration: none;
+      letter-spacing: 1.5px;
+      position: relative;
+      padding: 0.5rem 0;
+      font-size: 0.9rem;
+      transition: var(--transition);
+      text-transform: uppercase;
+    }
+
+    .nav-link:after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 1px;
+      bottom: 0;
+      left: 0;
+      background-color: var(--primary);
+      transition: var(--transition);
+    }
+
+    .nav-link:hover:after {
+      width: 100%;
+    }
+
+    /* Hero */
+    .hero {
+      height: 80vh;
+      background: linear-gradient(rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)), 
+      url('https://images.unsplash.com/photo-1556740738-b6a63e27c4df?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+      position: relative;
+    }
+
+    .hero-content {
+      max-width: 800px;
+      padding: 4rem;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 3.5rem;
+      font-weight: 500;
+      margin-bottom: 2rem;
+      letter-spacing: 2px;
+      line-height: 1.2;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+      font-weight: 300;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .divider {
+      width: 80px;
+      height: 1px;
+      background-color: var(--white);
+      margin: 2.5rem auto;
+      opacity: 0.7;
+    }
+
+    /* About Content */
+    .about-content {
+      max-width: 900px;
+      margin: 8rem auto;
+      padding: 0 4rem;
+    }
+
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem;
+      font-weight: 500;
+      text-align: center;
+      margin-bottom: 5rem;
+      position: relative;
+      letter-spacing: 1px;
+    }
+
+    .section-title:after {
+      content: '';
+      position: absolute;
+      width: 80px;
+      height: 1px;
+      background-color: var(--primary);
+      bottom: -25px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .about-text {
+      font-size: 1.15rem;
+      line-height: 2;
+      margin-bottom: 3rem;
+      text-align: center;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+      color: var(--secondary);
+    }
+
+    /* Values Section */
+    .values {
+      padding: 8rem 4rem;
+      background-color: var(--light);
+    }
+
+    .values-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .values-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 5rem;
+      margin-top: 5rem;
+    }
+
+    .value-card {
+      text-align: center;
+      padding: 0 1.5rem;
+    }
+
+    .value-icon {
+      font-size: 1.8rem;
+      color: var(--primary);
+      margin-bottom: 2rem;
+    }
+
+    .value-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      margin-bottom: 1.5rem;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+    }
+
+    .value-card p {
+      font-size: 1.05rem;
+      color: var(--secondary);
+      line-height: 1.9;
+    }
+
+    /* Numbers Section */
+    .numbers {
+      padding: 6rem 4rem;
+      background-color: var(--white);
+    }
+
+    .numbers-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .numbers-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 3rem;
+      margin-top: 5rem;
+    }
+
+    .number-item {
+      text-align: center;
+      padding: 1rem;
+    }
+
+    .number {
+      font-family: 'Playfair Display', serif;
+      font-size: 3.5rem;
+      font-weight: 500;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+
+    .number-label {
+      font-size: 0.9rem;
+      letter-spacing: 1.5px;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    /* Founder Section */
+    .founder {
+      padding: 8rem 4rem;
+      background-color: var(--light);
+    }
+
+    .founder-container {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 6rem;
+    }
+
+    .founder-image {
+      flex: 1;
+      min-width: 400px;
+      height: 500px;
+    }
+
+    .founder-content {
+      flex: 1;
+    }
+
+    .founder-quote {
+      font-size: 1.6rem;
+      font-style: italic;
+      margin-bottom: 3rem;
+      line-height: 1.8;
+      position: relative;
+      color: var(--secondary);
+      font-weight: 300;
+    }
+
+    .founder-quote:before,
+    .founder-quote:after {
+      content: '"';
+      font-size: 3rem;
+      color: var(--accent);
+      opacity: 0.3;
+      position: absolute;
+    }
+
+    .founder-quote:before {
+      top: -20px;
+      left: -30px;
+    }
+
+    .founder-quote:after {
+      bottom: -40px;
+      right: -30px;
+    }
+
+    .founder-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-weight: 500;
+      margin-top: 3rem;
+    }
+
+    .founder-title {
+      color: var(--accent);
+      font-weight: 400;
+      letter-spacing: 1.5px;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      margin-top: 0.5rem;
+    }
+
+    /* CTA */
+    .cta {
+      padding: 6rem 4rem;
+      background-color: var(--primary);
+      color: var(--white);
+      text-align: center;
+    }
+
+    .cta-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .cta h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem;
+      font-weight: 500;
+      margin-bottom: 2rem;
+    }
+
+    .cta p {
+      font-size: 1.1rem;
+      margin-bottom: 3rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      opacity: 0.8;
+    }
+
+    .cta-button {
+      display: inline-block;
+      padding: 1rem 2.5rem;
+      background-color: var(--accent);
+      color: var(--white);
+      text-decoration: none;
+      font-weight: 500;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      transition: var(--transition);
+    }
+
+    .cta-button:hover {
+      background-color: #6d4324;
+    }
+
+    /* Footer */
+    footer {
+      background-color: var(--primary);
+      color: var(--white);
+      padding: 6rem 4rem 4rem;
+      text-align: center;
+    }
+
+    .footer-logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      margin-bottom: 3rem;
+      display: inline-block;
+      letter-spacing: 1px;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 3rem;
+      margin-bottom: 4rem;
+      flex-wrap: wrap;
+    }
+
+    .footer-link {
+      color: var(--white);
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 300;
+      text-transform: uppercase;
+      opacity: 0.7;
+      letter-spacing: 1.5px;
+      transition: var(--transition);
+    }
+
+    .footer-link:hover {
+      opacity: 1;
+    }
+
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-bottom: 4rem;
+    }
+
+    .social-link {
+      color: var(--white);
+      font-size: 1rem;
+      transition: var(--transition);
+      opacity: 0.7;
+    }
+
+    .social-link:hover {
+      opacity: 1;
+      transform: translateY(-3px);
+    }
+
+    .copyright {
+      font-size: 0.75rem;
+      opacity: 0.5;
+      letter-spacing: 1px;
+    }
+
+    /* Responsive */
+    @media (max-width: 1200px) {
+      .founder-container {
+        gap: 4rem;
+      }
+      
+      .founder-image {
+        min-width: 350px;
+        height: 450px;
+      }
+    }
+
+    @media (max-width: 992px) {
+      header {
+        padding: 1.5rem 3rem;
+      }
+      
+      .founder-container {
+        flex-direction: column;
+      }
+
+      .founder-image {
+        min-width: 100%;
+        height: 400px;
+        margin-bottom: 4rem;
+      }
+
+      .hero h1 {
+        font-size: 3.2rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      header {
+        padding: 1.2rem 2rem;
+      }
+      
+      nav {
+        gap: 1.5rem;
+      }
+
+      .hero {
+        height: 70vh;
+      }
+      
+      .hero h1 {
+        font-size: 2.5rem;
+      }
+
+      .hero p {
+        font-size: 1rem;
+      }
+
+      .about-content, 
+      .values, 
+      .founder,
+      .numbers,
+      .cta {
+        padding: 5rem 2rem;
+      }
+
+      .section-title {
+        font-size: 2rem;
+        margin-bottom: 4rem;
+      }
+      
+      .values-grid {
+        gap: 3rem;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .hero h1 {
+        font-size: 2rem;
+      }
+
+      .hero-content {
+        padding: 2rem;
+      }
+      
+      .about-content {
+        margin: 5rem auto;
+      }
+      
+      .numbers-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      
+      .founder-quote {
+        font-size: 1.3rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header id="mainHeader">
+    <a href="dashboard.html" class="logo">AURE<span>LIVA</span></a>
+    <nav>
+      <a href="dashboard.html" class="nav-link">Home</a>
+      <a href="index.html" class="nav-link">Collections</a>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Redefining Online Luxury</h1>
+      <div class="divider"></div>
+      <p>Curating exceptional experiences since 2023</p>
+    </div>
+  </section>
+
+  <section class="about-content">
+    <h2 class="section-title">Our Essence</h2>
+    <p class="about-text">
+      AURELIVA was born from a vision to transform digital commerce into an experience of discovery and delight. We meticulously select each item in our collection, ensuring unparalleled quality and timeless appeal.
+    </p>
+    <p class="about-text">
+      Beyond mere transactions, we cultivate relationships between discerning clients and extraordinary products. Our platform blends cutting-edge technology with human discernment to deliver a shopping experience that transcends expectations.
+    </p>
+  </section>
+
+  <section class="values">
+    <div class="values-container">
+      <h2 class="section-title">Our Principles</h2>
+      <div class="values-grid">
+        <div class="value-card">
+          <div class="value-icon">
+            <i class="fas fa-gem"></i>
+          </div>
+          <h3 class="value-title">Exceptional Curation</h3>
+          <p>Each product undergoes rigorous evaluation by our experts. Only items meeting our exacting standards of craftsmanship and design earn a place in our collection.</p>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">
+            <i class="fas fa-globe"></i>
+          </div>
+          <h3 class="value-title">Global Sourcing</h3>
+          <p>We scour the world for extraordinary creators, bringing you unique pieces that tell a story of heritage, innovation, and artistic vision.</p>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">
+            <i class="fas fa-leaf"></i>
+          </div>
+          <h3 class="value-title">Conscious Commerce</h3>
+          <p>We partner with makers who share our commitment to ethical practices and environmental stewardship, proving luxury and responsibility can coexist beautifully.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="numbers">
+    <div class="numbers-container">
+      <h2 class="section-title">In Numbers</h2>
+      <div class="numbers-grid">
+        <div class="number-item">
+          <div class="number">2</div>
+          <div class="number-label">Years of Excellence</div>
+        </div>
+        <div class="number-item">
+          <div class="number">18+</div>
+          <div class="number-label">Curated Brands</div>
+        </div>
+        <div class="number-item">
+          <div class="number">1</div>
+          <div class="number-label">Country Served</div>
+        </div>
+        <div class="number-item">
+          <div class="number">1.2K+</div>
+          <div class="number-label">Satisfied Clients</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="founder">
+    <div class="founder-container">
+      <div class="founder-image"></div>
+      <div class="founder-content">
+        <blockquote class="founder-quote">
+          True luxury in the digital age isn't about excess—it's about the perfect alignment of quality, authenticity, and meaningful connection. At AURELIVA, we don't just sell products; we deliver carefully considered pieces that enrich lives.
+        </blockquote>
+        <p class="founder-name">Alexander Laurent</p>
+        <p class="founder-title">Founder & Creative Director</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <div class="cta-container">
+      <h2>Begin Your Journey</h2>
+      <p>Discover a world where every detail matters and every purchase tells a story.</p>
+      <a href="index.html" class="cta-button">Explore Collections</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-logo">AURELIVA</div>
+    <div class="footer-links">
+      <a href="dashboard.html" class="footer-link">Home</a>
+      <a href="about.html" class="footer-link">About</a>
+      <a href="index.html" class="footer-link">Collections</a>
+      <a href="contact.html" class="footer-link">Contact</a>
+    </div>
+    <div class="social-links">
+      <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+      <a href="#" class="social-link"><i class="fab fa-pinterest"></i></a>
+      <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+    </div>
+    <p class="copyright">© 2023 AURELIVA. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Header scroll effect
+    window.addEventListener('scroll', function() {
+      const header = document.getElementById('mainHeader');
+      if (window.scrollY > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
+  </script>
+</body>
+</html>

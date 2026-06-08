@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout - AURELIVA</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #1a1a1a;
+      --secondary-color: #f5f5f5;
+      --accent-color: #c19a6b;
+      --text-dark: #333;
+      --text-light: #f5f5f5;
+      --bg-light: #ffffff;
+      --bg-dark: #121212;
+      --border-radius: 8px;
+      --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      --transition: all 0.3s ease;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg-light);
+      color: var(--text-dark);
+      transition: var(--transition);
+    }
+
+    body.dark {
+      background-color: var(--bg-dark);
+      color: var(--text-light);
+    }
+
+    .checkout-container {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: 1fr 350px;
+      gap: 2rem;
+    }
+
+    .checkout-form {
+      background: var(--bg-light);
+      padding: 2rem;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+    }
+
+    body.dark .checkout-form {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .checkout-summary {
+      background: var(--bg-light);
+      padding: 2rem;
+      border-radius: var(--border-radius);
+      box-shadow: var(--box-shadow);
+      position: sticky;
+      top: 20px;
+      height: fit-content;
+    }
+
+    body.dark .checkout-summary {
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      color: var(--accent-color);
+      margin-top: 0;
+    }
+
+    h2 {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      font-size: 1.2rem;
+      margin-top: 0;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+      padding-bottom: 0.5rem;
+    }
+
+    body.dark h2 {
+      border-bottom-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      border: 1px solid #ddd;
+      border-radius: var(--border-radius);
+      font-family: 'Montserrat', sans-serif;
+      transition: var(--transition);
+    }
+
+    body.dark input, 
+    body.dark select {
+      background-color: #222;
+      border-color: #444;
+      color: var(--text-light);
+    }
+
+    input:focus, select:focus {
+      outline: none;
+      border-color: var(--accent-color);
+      box-shadow: 0 0 0 2px rgba(193, 154, 107, 0.2);
+    }
+
+    .btn {
+      width: 100%;
+      padding: 1rem;
+      background-color: var(--accent-color);
+      color: white;
+      border: none;
+      border-radius: var(--border-radius);
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      margin-top: 1rem;
+    }
+
+    .btn:hover {
+      background-color: #b08a5d;
+    }
+
+    .cart-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    body.dark .cart-item {
+      border-bottom-color: rgba(255, 255, 255, 0.05);
+    }
+
+    .cart-item-name {
+      font-weight: 500;
+    }
+
+    .cart-item-price {
+      font-weight: 600;
+      color: var(--accent-color);
+    }
+
+    .total {
+      font-weight: 700;
+      font-size: 1.2rem;
+      text-align: right;
+      margin-top: 1.5rem;
+    }
+
+    .payment-methods {
+      margin-top: 2rem;
+    }
+
+    .payment-option {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding: 0.8rem;
+      border: 1px solid #ddd;
+      border-radius: var(--border-radius);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    body.dark .payment-option {
+      border-color: #444;
+    }
+
+    .payment-option:hover {
+      border-color: var(--accent-color);
+    }
+
+    .payment-option input {
+      width: auto;
+      margin-right: 1rem;
+    }
+
+    .payment-icon {
+      margin-right: 1rem;
+      font-size: 1.5rem;
+      color: var(--accent-color);
+    }
+
+    .payment-label {
+      flex-grow: 1;
+    }
+
+    @media (max-width: 768px) {
+      .checkout-container {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+      }
+
+      .checkout-summary {
+        position: static;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="checkout-container">
+    <div class="checkout-form">
+      <h1>Checkout</h1>
+      
+      <form id="order-form">
+        <h2>Shipping Information</h2>
+        
+        <div class="form-group">
+          <label for="full-name">Full Name</label>
+          <input type="text" id="full-name" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="address">Shipping Address</label>
+          <input type="text" id="address" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="city">City</label>
+          <input type="text" id="city" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="state">State</label>
+          <input type="text" id="state" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="zip">ZIP Code</label>
+          <input type="text" id="zip" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="country">Country</label>
+          <input type="text" id="country" value="India" readonly>
+        </div>
+        
+        <h2>Payment Method</h2>
+        
+        <div class="payment-methods">
+        
+          
+          <div class="payment-option">
+            <input type="radio" id="cod" name="payment" value="Cash on Delivery">
+            <i class="fas fa-money-bill-wave payment-icon"></i>
+            <span class="payment-label">Cash on Delivery</span>
+          </div>
+        </div>
+        
+        <button type="submit" class="btn">Place Order</button>
+      </form>
+    </div>
+    
+    <div class="checkout-summary">
+      <h2>Order Summary</h2>
+      <div id="order-items">
+        <!-- Cart items will be inserted here -->
+      </div>
+      <div class="total">Total: ₹<span id="order-total">0.00</span></div>
+    </div>
+  </div>
+
+  <script>
+    // Load cart items from localStorage
+    const cartItems = JSON.parse(localStorage.getItem('shopSmartCart')) || [];
+    const orderItemsContainer = document.getElementById('order-items');
+    let orderTotal = 0;
+
+    // Display cart items in order summary
+    cartItems.forEach(item => {
+      const itemTotal = item.price * item.quantity;
+      orderTotal += itemTotal;
+
+      const itemElement = document.createElement('div');
+      itemElement.className = 'cart-item';
+      itemElement.innerHTML = `
+        <span class="cart-item-name">${item.name} × ${item.quantity}</span>
+        <span class="cart-item-price">₹${itemTotal.toFixed(2)}</span>
+      `;
+      orderItemsContainer.appendChild(itemElement);
+    });
+
+    // Update order total
+    document.getElementById('order-total').textContent = orderTotal.toFixed(2);
+
+    // Handle form submission
+    document.getElementById('order-form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Collect form data
+      const orderData = {
+        customer: {
+          name: document.getElementById('full-name').value,
+          email: document.getElementById('email').value,
+          phone: document.getElementById('phone').value,
+          address: document.getElementById('address').value,
+          city: document.getElementById('city').value,
+          state: document.getElementById('state').value,
+          zip: document.getElementById('zip').value,
+          country: document.getElementById('country').value
+        },
+        payment: document.querySelector('input[name="payment"]:checked').value,
+        items: cartItems,
+        total: orderTotal,
+        date: new Date().toISOString(),
+        orderId: Math.floor(100000 + Math.random() * 900000)
+      };
+
+      // Save order data to localStorage (in a real app, you would send this to a server)
+      localStorage.setItem('shopSmartOrder', JSON.stringify(orderData));
+      
+      // Redirect to invoice page
+      window.location.href = 'invoice.html';
+    });
+
+    // Check for dark mode preference
+    if (localStorage.getItem('darkMode') === 'enabled') {
+      document.body.classList.add('dark');
+    }
+  </script>
+  
+<div id="order-confirmation" class="modal" style="display: none;">
+  <div class="modal-content">
+    <div class="modal-body">
+      <i class="fas fa-check-circle" style="font-size: 4rem; color: #4CAF50;"></i>
+      <h2>Order Placed Successfully!</h2>
+      <p>Your order #<span id="confirmation-order-id"></span> has been confirmed.</p>
+      <p>You'll receive an email confirmation shortly.</p>
+      <button id="continue-to-invoice" class="btn">View Invoice</button>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Add these styles to your existing style section */
+  .modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+  }
+
+  .modal.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  .modal-content {
+    background: var(--bg-light);
+    border-radius: var(--border-radius);
+    width: 90%;
+    max-width: 500px;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+  }
+
+  body.dark .modal-content {
+    background: var(--bg-dark);
+  }
+
+  .modal-body {
+    padding: 1rem;
+  }
+
+  .modal-body h2 {
+    margin: 1rem 0;
+    color: var(--accent-color);
+    border-bottom: none;
+  }
+
+  .modal-body p {
+    margin: 0.5rem 0;
+    line-height: 1.6;
+  }
+
+  #continue-to-invoice {
+    margin-top: 2rem;
+    width: auto;
+    padding: 0.8rem 2rem;
+  }
+</style>
+
+<script>
+  // Update the form submission handler
+  document.getElementById('order-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Collect form data
+    const orderData = {
+      customer: {
+        name: document.getElementById('full-name').value,
+        email: document.getElementById('email').value,
+        phone: document.getElementById('phone').value,
+        address: document.getElementById('address').value,
+        city: document.getElementById('city').value,
+        state: document.getElementById('state').value,
+        zip: document.getElementById('zip').value,
+        country: document.getElementById('country').value
+      },
+      payment: document.querySelector('input[name="payment"]:checked').value,
+      items: cartItems,
+      total: orderTotal,
+      date: new Date().toISOString(),
+      orderId: Math.floor(100000 + Math.random() * 900000)
+    };
+
+    // Save order data to localStorage
+    localStorage.setItem('shopSmartOrder', JSON.stringify(orderData));
+    
+    // Show confirmation popup
+    document.getElementById('confirmation-order-id').textContent = orderData.orderId;
+    const modal = document.getElementById('order-confirmation');
+    modal.style.display = 'flex';
+    setTimeout(() => modal.classList.add('active'), 50);
+    
+    // Clear cart
+    localStorage.removeItem('shopSmartCart');
+  });
+
+  // Handle continue to invoice button
+  document.getElementById('continue-to-invoice').addEventListener('click', function() {
+    window.location.href = 'invoice.html';
+  });
+</script>
+</body>
+</html>

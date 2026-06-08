@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invoice - AURELIVA</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Montserrat:wght@300;400;500&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --navy: #0F1338;
+      --gold: #D4AF37;
+      --cream: #F5F0E6;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: var(--cream);
+      color: var(--navy);
+      padding: 2rem;
+      margin: 0;
+    }
+
+    .invoice-container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 3rem;
+      background: white;
+      box-shadow: 0 10px 30px rgba(15, 19, 56, 0.1);
+      border: 1px solid var(--gold);
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 2px solid var(--gold);
+    }
+
+    .header h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 700;
+      font-size: 2.5rem;
+      margin: 0;
+      color: var(--navy);
+    }
+
+    .invoice-details {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 2rem 0;
+    }
+
+    th {
+      background: var(--navy);
+      color: white;
+      padding: 1rem;
+      text-align: left;
+      font-weight: 500;
+    }
+
+    td {
+      padding: 1rem;
+      border-bottom: 1px solid #eee;
+    }
+
+    .total {
+      text-align: right;
+      margin-top: 2rem;
+      font-size: 1.2rem;
+    }
+
+    .grand-total {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      color: var(--gold);
+      font-weight: 600;
+    }
+
+    .product-img {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border: 1px solid #eee;
+    }
+
+    .print-btn {
+      display: block;
+      margin: 2rem auto 0;
+      padding: 0.8rem 2rem;
+      background: var(--navy);
+      color: white;
+      border: none;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    /* Add to your existing styles */
+    body.dark {
+      background-color: #121212;
+      color: #f5f5f5;
+    }
+
+    body.dark .product-card,
+    body.dark .cart-item,
+    body.dark .invoice-container {
+      background-color: #1e1e1e;
+      color: #ffffff;
+      border-color: #333;
+    }
+
+    body.dark th {
+      background-color: #0a0a2a;
+    }
+
+    body.dark .btn-add,
+    body.dark .btn-qty,
+    body.dark .btn-remove {
+      background-color: #333;
+      color: #f5f5f5;
+    }
+
+    .status-completed {
+      color: #4CAF50;
+      font-weight: 600;
+      background: rgba(76, 175, 80, 0.1);
+      padding: 0.2rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    .shipping-address {
+      margin-top: 2rem;
+      padding: 1rem;
+      background: rgba(245, 245, 245, 0.5);
+      border-radius: var(--border-radius);
+    }
+
+    body.dark .shipping-address {
+      background: rgba(30, 30, 30, 0.5);
+    }
+
+    .shipping-address h3 {
+      margin-top: 0;
+      color: var(--accent-color);
+      font-family: 'Montserrat', sans-serif;
+      font-size: 1rem;
+    }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"
+    integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+
+<body>
+  <div class="invoice-container" id="invoice">
+    <div class="header">
+      <h1>AURELIVA</h1>
+      <p>INVOICE</p>
+    </div>
+
+    <div class="invoice-details">
+      <div>
+        <p><strong>Order ID:</strong> #<span id="order-id"></span></p>
+        <p><strong>Date:</strong> <span id="order-date"></span></p>
+        <p><strong>Status:</strong> <span class="status-completed">Ordered done</span></p>
+      </div>
+      <div>
+        <p><strong>Customer:</strong> <span id="customer-name"></span></p>
+        <p><strong>Email:</strong> <span id="customer-email"></span></p>
+        <p><strong>Payment Method:</strong> <span id="payment-method"></span></p>
+      </div>
+    </div>
+
+    <div class="shipping-address">
+      <h3>Shipping Address</h3>
+      <p id="shipping-address"></p>
+    </div>
+
+
+    <table>
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Quantity</th>
+          <th>Price</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody id="invoice-items">
+      </tbody>
+    </table>
+
+    <div class="total">
+      <p><strong>Subtotal:</strong> ₹<span id="subtotal">0.00</span></p>
+      <p><strong>Shipping:</strong> ₹<span id="shipping">0.00</span></p>
+      <p><strong>Tax (5%):</strong> ₹<span id="tax">0.00</span></p>
+      <p class="grand-total">Total: ₹<span id="grand-total">0.00</span></p>
+    </div>
+
+    <button class="print-btn" onclick="downloadPDF()">Download Invoice</button>
+  </div>
+
+  <script>
+    // Load order data
+    const orderData = JSON.parse(localStorage.getItem('shopSmartOrder')) || {};
+    const cartItems = orderData.items || [];
+
+    // Set order details
+    document.getElementById('order-id').textContent = orderData.orderId || Math.floor(100000 + Math.random() * 900000);
+    document.getElementById('order-date').textContent = orderData.date ? new Date(orderData.date).toLocaleDateString() : new Date().toLocaleDateString();
+
+    document.getElementById('customer-name').textContent = orderData.customer?.name || 'Guest';
+    document.getElementById('customer-email').textContent = orderData.customer?.email || 'N/A';
+    document.getElementById('payment-method').textContent = orderData.payment || 'Credit Card';
+
+    const shippingAddress = orderData.customer ?
+      `${orderData.customer.address}, ${orderData.customer.city}, ${orderData.customer.state} - ${orderData.customer.zip}, ${orderData.customer.country}` :
+      'N/A';
+    document.getElementById('shipping-address').textContent = shippingAddress;
+
+    // Add items to invoice
+    const invoiceItems = document.getElementById('invoice-items');
+    let subtotal = 0;
+
+    cartItems.forEach(item => {
+      const total = item.price * item.quantity;
+      subtotal += total;
+
+      const row = document.createElement('tr');
+      row.innerHTML = `
+      <td>
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <img src="${item.image}" alt="${item.name}" class="product-img" onerror="this.style.display='none'">
+          <div>
+            <strong>${item.name}</strong><br>
+            <small>${item.category}</small>
+          </div>
+        </div>
+      </td>
+      <td>${item.quantity}</td>
+      <td>₹${item.price.toFixed(2)}</td>
+      <td>₹${total.toFixed(2)}</td>
+    `;
+      invoiceItems.appendChild(row);
+    });
+
+    // Calculate totals
+    const shipping = subtotal > 5000 ? 0 : 150;
+    const tax = subtotal * 0.05;
+    const grandTotal = subtotal + shipping + tax;
+
+    document.getElementById('subtotal').textContent = subtotal.toFixed(2);
+    document.getElementById('shipping').textContent = shipping.toFixed(2);
+    document.getElementById('tax').textContent = tax.toFixed(2);
+    document.getElementById('grand-total').textContent = grandTotal.toFixed(2);
+
+    function downloadPDF() {
+      const element = document.getElementById('invoice');
+      const opt = {
+        margin: 10,
+        filename: `Aureliva_Invoice_${document.getElementById('order-id').textContent}.pdf`,
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: {
+          scale: 2,
+          logging: true,
+          useCORS: true
+        },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+      };
+
+      // New Promise-based usage
+      html2pdf().set(opt).from(element).save()
+        .then(() => {
+          console.log('PDF generated successfully');
+        })
+        .catch((error) => {
+          console.error('Error generating PDF:', error);
+          alert('Error generating PDF. Please try again or check console for details.');
+        });
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AURELIVA | Order Tracking System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <style>
+        :root {
+            --navy: #0F1338;
+            --gold: #D4AF37;
+            --cream: #F5F0E6;
+            --light-gold: rgba(212, 175, 55, 0.15);
+            --charcoal: #2A2A2A;
+            --bg-dark: #121212;
+            --success-color: #27ae60;
+            --warning-color: #f39c12;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 400;
+            background-color: var(--cream);
+            color: var(--charcoal);
+            line-height: 1.6;
+            transition: var(--transition);
+        }
+
+        body.dark {
+            background-color: var(--bg-dark);
+            color: var(--cream);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--navy) 0%, #1A1F4E 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 4px 30px rgba(15, 19, 56, 0.2);
+            border-bottom: 1px solid var(--gold);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-img {
+            height: 40px;
+            width: auto;
+        }
+
+        .logo-fallback {
+            height: 40px;
+            width: 40px;
+            background-color: var(--gold);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            color: var(--navy);
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 700;
+            font-size: 1.2rem;
+            border-radius: 4px;
+        }
+
+        .logo-text {
+            font-family: 'Cormorant Garamond', serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            letter-spacing: 1px;
+            background: linear-gradient(to right, var(--gold), #F5D782);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .tracker-section {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(15, 19, 56, 0.1);
+            padding: 30px;
+            margin: 20px auto 50px;
+            position: relative;
+            z-index: 10;
+            max-width: 800px;
+            border: 1px solid var(--light-gold);
+            transition: var(--transition);
+        }
+
+        body.dark .tracker-section {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--cream);
+            border-color: rgba(212, 175, 55, 0.3);
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 25px;
+            color: var(--navy);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+        }
+
+        body.dark .section-title {
+            color: var(--gold);
+        }
+
+        .tracker-form {
+            display: flex;
+            margin-bottom: 25px;
+        }
+
+        .tracker-input {
+            flex: 1;
+            padding: 12px 18px;
+            border: 2px solid var(--light-gold);
+            border-radius: 6px 0 0 6px;
+            font-size: 16px;
+            font-family: 'Montserrat', sans-serif;
+            transition: var(--transition);
+        }
+
+        .tracker-input:focus {
+            outline: none;
+            border-color: var(--gold);
+        }
+
+        .tracker-btn {
+            background-color: var(--navy);
+            color: var(--gold);
+            border: none;
+            padding: 0 25px;
+            border-radius: 0 6px 6px 0;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .tracker-btn:hover {
+            background-color: var(--gold);
+            color: var(--navy);
+        }
+
+        .tracker-results {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .order-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .order-detail {
+            flex: 1;
+        }
+
+        .order-detail h3 {
+            font-size: 14px;
+            color: var(--gold);
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+
+        .order-detail p {
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .status-timeline {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 30px;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 10px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: var(--light-gold);
+            z-index: 1;
+        }
+
+        .timeline-progress {
+            position: absolute;
+            left: 10px;
+            top: 0;
+            width: 2px;
+            background-color: var(--gold);
+            z-index: 2;
+            height: 60%;
+            transition: height 0.5s ease;
+        }
+
+        .status-item {
+            position: relative;
+            padding: 12px 0 12px 40px;
+            margin-bottom: 8px;
+        }
+
+        .status-dot {
+            position: absolute;
+            left: 0;
+            top: 15px;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background-color: white;
+            border: 3px solid var(--light-gold);
+            z-index: 3;
+        }
+
+        .status-item.active .status-dot {
+            border-color: var(--gold);
+            background-color: var(--gold);
+        }
+
+        .status-item.current .status-dot {
+            border-color: var(--gold);
+            background-color: white;
+            box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.3);
+        }
+
+        .status-item.pending .status-dot {
+            border-color: var(--warning-color);
+        }
+
+        .status-content h4 {
+            font-size: 16px;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+
+        .status-content p {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+
+        .map-container {
+            height: 250px;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 25px;
+            box-shadow: 0 5px 15px rgba(15, 19, 56, 0.1);
+            border: 1px solid var(--light-gold);
+        }
+
+        .no-map {
+            background-color: var(--cream);
+            border-radius: 8px;
+            padding: 25px;
+            text-align: center;
+            margin-top: 25px;
+            box-shadow: 0 5px 15px rgba(15, 19, 56, 0.05);
+            border: 1px solid var(--light-gold);
+        }
+
+        body.dark .no-map {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .no-map h3 {
+            color: var(--navy);
+            margin-bottom: 10px;
+            font-family: 'Cormorant Garamond', serif;
+        }
+
+        body.dark .no-map h3 {
+            color: var(--gold);
+        }
+
+        .no-map p {
+            color: #7f8c8d;
+        }
+
+        .location-steps {
+            margin-top: 25px;
+        }
+
+        .location-step {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            background-color: white;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            box-shadow: 0 2px 8px rgba(15, 19, 56, 0.05);
+            transition: var(--transition);
+            border: 1px solid var(--light-gold);
+        }
+
+        body.dark .location-step {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        .location-step:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(15, 19, 56, 0.1);
+            border-color: var(--gold);
+        }
+
+        .step-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: var(--light-gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            color: var(--navy);
+            font-weight: bold;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-content h4 {
+            font-size: 15px;
+            margin-bottom: 5px;
+        }
+
+        .step-content p {
+            font-size: 13px;
+            color: #7f8c8d;
+        }
+
+        .step-status {
+            padding: 4px 8px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-completed {
+            background-color: rgba(212, 175, 55, 0.1);
+            color: var(--gold);
+        }
+
+        .status-pending {
+            background-color: rgba(243, 156, 18, 0.1);
+            color: var(--warning-color);
+        }
+
+        footer {
+            background: linear-gradient(135deg, var(--navy) 0%, #1A1F4E 100%);
+            color: white;
+            padding: 25px 0;
+            text-align: center;
+            margin-top: 40px;
+            border-top: 1px solid var(--gold);
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .dark-mode-toggle {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: var(--navy);
+            color: var(--gold);
+            padding: 10px 15px;
+            border: 2px solid var(--gold);
+            border-radius: 4px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: var(--transition);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dark-mode-toggle:hover {
+            background-color: var(--gold);
+            color: var(--navy);
+        }
+
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .order-info {
+                flex-direction: column;
+            }
+
+            .order-detail {
+                margin-bottom: 15px;
+            }
+
+            .tracker-form {
+                flex-direction: column;
+            }
+
+            .tracker-input {
+                border-radius: 6px;
+                margin-bottom: 10px;
+            }
+
+            .tracker-btn {
+                border-radius: 6px;
+                padding: 12px;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .footer-links {
+                display: flex;
+                gap: 15px;
+                margin-top: 10px;
+            }
+
+            .footer-links a {
+                margin: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo-wrapper">
+                <div class="logo-fallback">A</div>
+                <img src="logo.png" alt="AURELIVA" class="logo-img"
+                    onerror="this.style.display='none'; document.querySelector('.logo-fallback').style.display='flex'">
+                <span class="logo-text">AURELIVA</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="tracker-section">
+            <h2 class="section-title">Track Your Order</h2>
+
+            <form id="trackerForm" class="tracker-form">
+                <input type="text" class="tracker-input" id="billId"
+                    placeholder="Enter your Bill ID (e.g. ALV-123456789)" required>
+                <button type="submit" class="tracker-btn">Track Order</button>
+            </form>
+
+            <div id="trackerResults" class="tracker-results">
+                <div class="order-info">
+                    <div class="order-detail">
+                        <h3>Order Number</h3>
+                        <p id="orderNumber">ALV-987654321</p>
+                    </div>
+                    <div class="order-detail">
+                        <h3>Status</h3>
+                        <p id="orderStatus">In Transit</p>
+                    </div>
+                    <div class="order-detail">
+                        <h3>Estimated Delivery</h3>
+                        <p id="deliveryDate">May 25, 2025</p>
+                    </div>
+                </div>
+
+                <div class="status-timeline">
+                    <div class="timeline-line"></div>
+                    <div class="timeline-progress"></div>
+
+                    <div class="status-item active">
+                        <div class="status-dot"></div>
+                        <div class="status-content">
+                            <h4>Order Placed</h4>
+                            <p>May 15, 2025 - 10:30 AM</p>
+                        </div>
+                    </div>
+
+                    <div class="status-item active">
+                        <div class="status-dot"></div>
+                        <div class="status-content">
+                            <h4>Processing</h4>
+                            <p>May 16, 2025 - 02:15 PM</p>
+                        </div>
+                    </div>
+
+                    <div class="status-item current">
+                        <div class="status-dot"></div>
+                        <div class="status-content">
+                            <h4>Shipped</h4>
+                            <p>May 18, 2025 - 09:45 AM</p>
+                        </div>
+                    </div>
+
+                    <div class="status-item">
+                        <div class="status-dot"></div>
+                        <div class="status-content">
+                            <h4>Out for Delivery</h4>
+                            <p>Estimated: May 25, 2025</p>
+                        </div>
+                    </div>
+
+                    <div class="status-item">
+                        <div class="status-dot"></div>
+                        <div class="status-content">
+                            <h4>Delivered</h4>
+                            <p>Not yet delivered</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="mapDisplay" class="map-container">
+                    <!-- Map will be loaded here if available -->
+                </div>
+
+                <div id="noMap" class="no-map" style="display: none;">
+                    <h3>Live Tracking Unavailable</h3>
+                    <p>Real-time location tracking is not available for this shipment. Below are the latest updates:</p>
+                </div>
+
+                <div class="location-steps">
+                    <div class="location-step">
+                        <div class="step-icon">1</div>
+                        <div class="step-content">
+                            <h4>Warehouse Processing</h4>
+                            <p>Mumbai Distribution Center</p>
+                        </div>
+                        <div class="step-status status-completed">Completed</div>
+                    </div>
+
+                    <div class="location-step">
+                        <div class="step-icon">2</div>
+                        <div class="step-content">
+                            <h4>In Transit</h4>
+                            <p>Departed from Mumbai - May 18, 2025</p>
+                        </div>
+                        <div class="step-status status-completed">Completed</div>
+                    </div>
+
+                    <div class="location-step">
+                        <div class="step-icon">3</div>
+                        <div class="step-content">
+                            <h4>Current Location</h4>
+                            <p>Delhi Sorting Facility - May 20, 2025</p>
+                        </div>
+                        <div class="step-status status-pending">In Progress</div>
+                    </div>
+
+                    <div class="location-step">
+                        <div class="step-icon">4</div>
+                        <div class="step-content">
+                            <h4>Next Destination</h4>
+                            <p>Bangalore Regional Hub</p>
+                        </div>
+                        <div class="step-status status-pending">Pending</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="copyright">© 2023 AURELIVA. All rights reserved.</div>
+        </div>
+    </footer>
+
+    <!-- Dark mode toggle button -->
+    <button class="dark-mode-toggle" id="darkModeToggle">
+        <i class="fas fa-moon"></i> <span>Dark Mode</span>
+    </button>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script>
+        // Initialize the page with content visible
+        document.addEventListener('DOMContentLoaded', function () {
+            // Show default tracking information
+            document.getElementById('trackerResults').style.display = 'block';
+
+            // Initialize map (commented out as it will be shown when user searches)
+            // initMap();
+        });
+
+        document.getElementById('trackerForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const billId = document.getElementById('billId').value;
+
+            // In a real application, you would make an AJAX call here to fetch tracking data
+            // For this demo, we'll just simulate a response
+            simulateTrackingResponse(billId);
+        });
+
+        function simulateTrackingResponse(billId) {
+            // Show loading state
+            document.getElementById('trackerResults').style.opacity = '0.5';
+
+            // Simulate API delay
+            setTimeout(function () {
+                // Update order information based on the bill ID
+                document.getElementById('orderNumber').textContent = billId;
+
+                // Randomly decide whether to show map or not (50% chance)
+                const showMap = Math.random() > 0.5;
+
+                if (showMap) {
+                    document.getElementById('mapDisplay').style.display = 'block';
+                    document.getElementById('noMap').style.display = 'none';
+                    initMap();
+                } else {
+                    document.getElementById('mapDisplay').style.display = 'none';
+                    document.getElementById('noMap').style.display = 'block';
+                }
+
+                // Show the results
+                document.getElementById('trackerResults').style.opacity = '1';
+
+                // Scroll to results
+                document.getElementById('trackerResults').scrollIntoView({ behavior: 'smooth' });
+            }, 800);
+        }
+
+        function initMap() {
+            // Initialize Leaflet map with Indian locations
+            const map = L.map('mapDisplay').setView([20.5937, 78.9629], 5); // Centered on India
+
+            // Add OpenStreetMap tiles
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            // Add shipment route markers
+            const mumbai = L.marker([19.0760, 72.8777]).addTo(map)
+                .bindPopup('Mumbai Distribution Center<br>Departed: May 18, 2025');
+
+            const delhi = L.marker([28.7041, 77.1025]).addTo(map)
+                .bindPopup('Delhi Sorting Facility<br>Arrived: May 20, 2025');
+
+            const bangalore = L.marker([12.9716, 77.5946]).addTo(map)
+                .bindPopup('Bangalore Regional Hub<br>Estimated arrival: May 23, 2025');
+
+            // Add a polyline to show the route
+            const route = L.polyline(
+                [
+                    [19.0760, 72.8777], // Mumbai
+                    [28.7041, 77.1025], // Delhi
+                    [12.9716, 77.5946]  // Bangalore
+                ],
+                {
+                    color: '#D4AF37', // Gold color
+                    weight: 3,
+                    opacity: 0.7,
+                    dashArray: '10, 10'
+                }
+            ).addTo(map);
+
+            // Fit map to bounds
+            map.fitBounds([
+                [19.0760, 72.8777],
+                [28.7041, 77.1025],
+                [12.9716, 77.5946]
+            ]);
+        }
+
+        // Dark mode toggle functionality
+        const darkModeToggle = document.getElementById('darkModeToggle');
+        darkModeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark');
+            localStorage.setItem('darkMode', document.body.classList.contains('dark'));
+
+            // Update button icon and text
+            const icon = darkModeToggle.querySelector('i');
+            const text = darkModeToggle.querySelector('span');
+            if (document.body.classList.contains('dark')) {
+                icon.classList.remove('fa-moon');
+                icon.classList.add('fa-sun');
+                text.textContent = 'Light Mode';
+            } else {
+                icon.classList.remove('fa-sun');
+                icon.classList.add('fa-moon');
+                text.textContent = 'Dark Mode';
+            }
+        });
+
+        // Check for saved dark mode preference
+        if (localStorage.getItem('darkMode') === 'true') {
+            document.body.classList.add('dark');
+            const icon = darkModeToggle.querySelector('i');
+            const text = darkModeToggle.querySelector('span');
+            icon.classList.remove('fa-moon');
+            icon.classList.add('fa-sun');
+            text.textContent = 'Light Mode';
+        }
+    </script>
+</body>
+
+</html>

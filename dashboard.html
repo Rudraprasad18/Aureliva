@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aureliva - Premium Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Montserrat:wght@300;400;500;600&display=swap"
+    rel="stylesheet">
+
+  <style>
+    :root {
+      --navy: #0F1338;
+      --gold: #D4AF37;
+      --cream: #F5F0E6;
+      --light-gold: rgba(212, 175, 55, 0.15);
+      --charcoal: #2A2A2A;
+      --slate: #678197;
+      --bg-dark: #121212;
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 400;
+      line-height: 1.6;
+      color: var(--charcoal);
+      background-color: var(--cream);
+      transition: var(--transition);
+    }
+
+    body.dark {
+      background-color: var(--bg-dark);
+      color: var(--cream);
+    }
+
+    body.menu-open {
+      overflow: hidden;
+    }
+
+    /* Hamburger Menu Button */
+    .hamburger-btn {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 1000;
+      background: var(--navy);
+      color: var(--gold);
+      border: 2px solid var(--gold);
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border-radius: 4px;
+      font-size: 1.2rem;
+      transition: var(--transition);
+    }
+
+    body.dark .hamburger-btn {
+      background: var(--gold);
+      color: var(--navy);
+    }
+
+    .hamburger-btn:hover {
+      background: var(--gold);
+      color: var(--navy);
+    }
+
+    /* Side Menu */
+    .side-menu {
+      position: fixed;
+      top: 0;
+      left: -250px;
+      width: 250px;
+      height: 100vh;
+      background: linear-gradient(135deg, var(--navy) 0%, #1A1F4E 100%);
+      z-index: 999;
+      transition: transform 0.3s ease;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+      border-right: 1px solid var(--gold);
+      overflow-y: auto;
+    }
+
+    .side-menu.active {
+      transform: translateX(250px);
+    }
+
+    .menu-header {
+      padding: 20px;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+      margin-bottom: 10px;
+    }
+
+    .menu-header .logo-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 700;
+      font-size: 1.5rem;
+      letter-spacing: 1px;
+      background: linear-gradient(to right, var(--gold), #F5D782);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .menu-content {
+      list-style: none;
+      padding: 0;
+    }
+
+    .menu-content li {
+      margin-bottom: 5px;
+    }
+
+    .menu-content a {
+      text-decoration: none;
+      color: var(--gold);
+      display: flex;
+      align-items: center;
+      padding: 15px 20px;
+      transition: var(--transition);
+      font-size: 0.95rem;
+    }
+
+    .menu-content a:hover {
+      background-color: rgba(212, 175, 55, 0.2);
+      color: white;
+    }
+
+    .menu-content i {
+      margin-right: 15px;
+      font-size: 1.1rem;
+      width: 20px;
+      text-align: center;
+    }
+
+
+    header {
+      margin: 0;
+      padding: 1.5rem 3rem;
+      background: linear-gradient(135deg, var(--navy) 0%, #1A1F4E 100%);
+      color: white;
+      position: relative;
+      top: 0;
+      box-shadow: 0 4px 30px rgba(15, 19, 56, 0.3);
+      border-bottom: 2px solid var(--gold);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 90;
+    }
+
+    .logo-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      position: relative;
+      margin-left: 50px;
+    }
+
+    .logo-img {
+      height: 60px;
+      width: auto;
+      transition: var(--transition);
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+    }
+
+    .logo-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 800;
+      font-size: 2rem;
+      letter-spacing: 1.5px;
+      background: linear-gradient(to right, var(--gold), #F5D782);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      position: relative;
+      z-index: 10;
+    }
+
+    .logo-text::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(to right, var(--gold), transparent);
+    }
+
+    .nav-buttons {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .nav-buttons button {
+      background-color: transparent;
+      color: var(--gold);
+      padding: 0.8rem 2rem;
+      border: 2px solid var(--gold);
+      border-radius: 4px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: var(--transition);
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .nav-buttons button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.2), transparent);
+      transition: 0.5s;
+    }
+
+    .nav-buttons button:hover {
+      background-color: var(--gold);
+      color: var(--navy);
+      box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+      transform: translateY(-2px);
+    }
+
+    .nav-buttons button:hover::before {
+      left: 100%;
+    }
+
+    .dark-mode-toggle {
+      background-color: transparent;
+      color: var(--gold);
+      padding: 0.8rem 1.8rem;
+      border: 2px solid var(--gold);
+      border-radius: 4px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: var(--transition);
+      cursor: pointer;
+      margin-left: 0;
+    }
+
+    .dark-mode-toggle:hover {
+      background-color: var(--gold);
+      color: var(--navy);
+      box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+      transform: translateY(-2px);
+    }
+
+    /* Navigation Buttons */
+    .nav-buttons {
+      display: flex;
+      gap: 0.6rem;
+    }
+
+    .nav-buttons button {
+      background-color: var(--navy);
+      color: var(--gold);
+      padding: 0.6rem 1.6rem;
+      border: 2px solid var(--gold);
+      border-radius: 0;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .nav-buttons button:hover {
+      background-color: var(--gold);
+      color: var(--navy);
+      box-shadow: 0 3px 10px rgba(212, 175, 55, 0.3);
+      transform: translateY(-1px);
+    }
+
+    /* Dashboard Cards */
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin: 2rem auto;
+      padding: 0 2rem;
+      max-width: 1200px;
+    }
+
+    .dashboard-card {
+      background: white;
+      border-radius: 8px;
+      padding: 2rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      transition: var(--transition);
+      border: 1px solid var(--light-gold);
+    }
+
+    body.dark .dashboard-card {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--cream);
+    }
+
+    .dashboard-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .card-icon {
+      width: 50px;
+      height: 50px;
+      background-color: var(--gold);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 1rem;
+      color: var(--navy);
+      font-size: 1.2rem;
+    }
+
+    .card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      margin: 0;
+      color: var(--navy);
+    }
+
+    body.dark .card-title {
+      color: var(--gold);
+    }
+
+    .card-value {
+      font-size: 2rem;
+      font-weight: 700;
+      margin: 0.5rem 0;
+      color: var(--gold);
+    }
+
+    .card-text {
+      color: var(--charcoal);
+      opacity: 0.8;
+    }
+
+    body.dark .card-text {
+      color: var(--cream);
+    }
+
+    /* Slider Section */
+    .slider-container {
+      position: relative;
+      overflow: hidden;
+      margin: 0 auto 30px;
+      height: 400px;
+      width: 98%;
+      border-radius: 8px;
+      box-shadow: 0 8px 20px rgba(15, 19, 56, 0.15);
+      margin-top: 30px;
+    }
+
+    .slider {
+      display: flex;
+      width: 400%;
+      height: 100%;
+      animation: slide 40s linear;
+      gap: 10px;
+    }
+
+    .slide {
+      width: 25%;
+      flex-shrink: 0;
+    }
+
+    .slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .slider-nav {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 15px;
+      gap: 15px;
+    }
+
+    .slider-dots {
+      display: flex;
+      gap: 8px;
+    }
+
+    .slider-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: var(--slate);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .slider-dot.active {
+      background-color: var(--gold);
+      transform: scale(1.2);
+    }
+
+    .slider-arrow {
+      background-color: var(--navy);
+      color: var(--gold);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      border: 2px solid var(--gold);
+      transition: var(--transition);
+    }
+
+    .slider-arrow:hover {
+      background-color: var(--gold);
+      color: var(--navy);
+    }
+
+    .slide-counter {
+      font-family: 'Montserrat', sans-serif;
+      color: var(--navy);
+      font-weight: 500;
+      margin: 0 10px;
+    }
+
+    body.dark .slide-counter {
+      color: var(--cream);
+    }
+
+    @keyframes slide {
+      0% {
+        transform: translateX(0);
+      }
+
+      20% {
+        transform: translateX(-25%);
+      }
+
+      40% {
+        transform: translateX(-50%);
+      }
+
+      60% {
+        transform: translateX(-75%);
+      }
+
+      80% {
+        transform: translateX(-100%);
+      }
+
+      100% {
+        transform: translateX(0);
+      }
+    }
+
+    /* About Section */
+    .about {
+      padding: 3rem 2rem 2rem;
+      background-color: white;
+      position: relative;
+      margin-bottom: 0;
+    }
+
+    body.dark .about {
+      background-color: var(--bg-dark);
+    }
+
+    .about::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 8px;
+      background: linear-gradient(to right, var(--navy), var(--gold));
+    }
+
+    .about h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 700;
+      font-size: 2.2rem;
+      color: var(--navy);
+      text-align: center;
+      margin-bottom: 1.8rem;
+      letter-spacing: 0.8px;
+    }
+
+    body.dark .about h2 {
+      color: var(--gold);
+    }
+
+    .about h2::after {
+      content: "";
+      display: block;
+      width: 70px;
+      height: 2px;
+      background: var(--gold);
+      margin: 0.8rem auto;
+    }
+
+    .about p {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 400;
+      font-size: 1rem;
+      line-height: 1.6;
+      color: var(--charcoal);
+      max-width: 750px;
+      margin: 1rem auto;
+      text-align: center;
+    }
+
+    body.dark .about p {
+      color: var(--cream);
+    }
+
+    /* Reviews Section */
+    .reviews {
+      padding: 3rem 2rem;
+      background-color: var(--cream);
+      border-top: 1px solid var(--light-gold);
+    }
+
+    body.dark .reviews {
+      background-color: var(--bg-dark);
+    }
+
+    .reviews h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 700;
+      font-size: 2.2rem;
+      color: var(--navy);
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    body.dark .reviews h2 {
+      color: var(--gold);
+    }
+
+    .reviews h2::after {
+      content: "";
+      display: block;
+      width: 70px;
+      height: 2px;
+      background: var(--gold);
+      margin: 0.8rem auto;
+    }
+
+    .review-container {
+      display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .review {
+      background: white;
+      border: 1px solid var(--light-gold);
+      border-radius: 0;
+      box-shadow: 0 4px 20px rgba(15, 19, 56, 0.08);
+      padding: 1.8rem;
+      width: 280px;
+      min-height: 300px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: var(--transition);
+    }
+
+    body.dark .review {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--cream);
+    }
+
+    .review:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 10px 30px rgba(15, 19, 56, 0.12);
+      border-color: var(--gold);
+    }
+
+    .review img {
+      width: 65px;
+      height: 65px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 1.2rem;
+      border: 2px solid var(--gold);
+    }
+
+    .review h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 600;
+      font-size: 1.2rem;
+      color: var(--navy);
+      margin: 0.4rem 0;
+    }
+
+    body.dark .review h4 {
+      color: var(--gold);
+    }
+
+    .stars {
+      color: var(--gold);
+      font-size: 1.1rem;
+      margin: 0.4rem 0;
+    }
+
+    .review p {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 400;
+      font-style: italic;
+      color: #555;
+      margin-top: 0.8rem;
+      line-height: 1.5;
+      font-size: 0.95rem;
+    }
+
+    body.dark .review p {
+      color: var(--cream);
+    }
+
+    /* Premium Footer Styles */
+    footer {
+      background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+      color: #e0e0e0;
+      padding: 60px 0 0;
+      font-family: 'Montserrat', sans-serif;
+      border-top: 1px solid rgba(193, 154, 107, 0.3);
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 5%;
+    }
+
+    .footer-top {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 50px;
+      padding-bottom: 40px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .footer-brand {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .logo-container img {
+      height: 40px;
+    }
+
+    .logo-text {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 1.8rem;
+      color: #fff;
+      letter-spacing: 1px;
+    }
+
+    .logo-text span {
+      color: #c19a6b;
+    }
+
+    .brand-tagline {
+      font-size: 0.9rem;
+      color: rgba(255, 255, 255, 0.6);
+      margin-bottom: 25px;
+      line-height: 1.6;
+      font-weight: 300;
+    }
+
+    .social-links {
+      display: flex;
+      gap: 15px;
+    }
+
+    .social-icon {
+      color: #c19a6b;
+      font-size: 1rem;
+      width: 36px;
+      height: 36px;
+      border: 1px solid rgba(193, 154, 107, 0.3);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .social-icon:hover {
+      background: rgba(193, 154, 107, 0.1);
+      transform: translateY(-3px);
+      color: #fff;
+    }
+
+    .footer-columns {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 30px;
+    }
+
+    .footer-col h4 {
+      font-family: 'Playfair Display', serif;
+      color: #c19a6b;
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+      position: relative;
+      padding-bottom: 10px;
+    }
+
+    .footer-col h4::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 40px;
+      height: 1px;
+      background: #c19a6b;
+    }
+
+    .footer-col ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .footer-col li {
+      margin-bottom: 12px;
+    }
+
+    .footer-col a,
+    .footer-col li {
+      color: rgba(255, 255, 255, 0.7);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 300;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .footer-col a:hover {
+      color: #c19a6b;
+      padding-left: 5px;
+    }
+
+    .footer-col i {
+      color: #c19a6b;
+      font-size: 0.8rem;
+      width: 16px;
+    }
+
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 25px 0;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .payment-methods {
+      display: flex;
+      gap: 15px;
+    }
+
+    .payment-methods i {
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 1.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .payment-methods i:hover {
+      color: #c19a6b;
+    }
+
+    .legal-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .legal-links a {
+      color: rgba(255, 255, 255, 0.6);
+      text-decoration: none;
+      font-size: 0.8rem;
+      transition: all 0.3s ease;
+    }
+
+    .legal-links a:hover {
+      color: #c19a6b;
+    }
+
+    .copyright {
+      color: rgba(255, 255, 255, 0.4);
+      font-size: 0.8rem;
+    }
+
+    .main-content {
+      margin-top: 20px;
+    }
+
+    /* Login Modal */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.7);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 2.5rem;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      border: 2px solid var(--gold);
+      box-shadow: 0 8px 30px rgba(15, 19, 56, 0.25);
+    }
+
+    body.dark .modal-content {
+      background: var(--bg-dark);
+      color: var(--cream);
+    }
+
+    .modal-content h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 700;
+      color: var(--navy);
+      margin-bottom: 1.2rem;
+      font-size: 1.6rem;
+    }
+
+    body.dark .modal-content h3 {
+      color: var(--gold);
+    }
+
+    .modal input {
+      width: 100%;
+      padding: 0.7rem;
+      margin: 0.6rem 0;
+      border: 1px solid #ddd;
+      font-family: 'Montserrat', sans-serif;
+    }
+
+    body.dark .modal input {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--cream);
+      border-color: var(--gold);
+    }
+
+    .modal button {
+      padding: 0.7rem 1.8rem;
+      background: var(--navy);
+      color: var(--gold);
+      border: 2px solid var(--gold);
+      border-radius: 0;
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 600;
+      letter-spacing: 0.8px;
+      margin-top: 0.8rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .modal button:hover {
+      background: var(--gold);
+      color: var(--navy);
+    }
+
+    .logo-fallback {
+      height: 45px;
+      width: 45px;
+      background-color: var(--gold);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      color: var(--navy);
+      font-family: 'Cormorant Garamond', serif;
+      font-weight: 700;
+      font-size: 1.5rem;
+      border-radius: 4px;
+    }
+
+    /* Responsive Styles */
+    @media (max-width: 768px) {
+      .nav-buttons {
+        display: none;
+      }
+
+      .logo-text {
+        font-size: 1.4rem;
+      }
+
+      .logo-img {
+        height: 50px;
+      }
+
+      .slider-container {
+        height: 300px;
+      }
+
+      .review {
+        width: 100%;
+        max-width: 280px;
+      }
+
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+        padding: 0 1rem;
+      }
+
+      .footer-top {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-columns {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 576px) {
+      .footer-columns {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .legal-links {
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <button class="hamburger-btn" id="hamburgerBtn">
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <div class="side-menu" id="sideMenu">
+    <div class="menu-header">
+      <div class="logo-text">AURELIVA</div>
+    </div>
+    <ul class="menu-content">
+      <li><a href="dashboard.html"><i class="fas fa-home"></i> Home</a></li>
+      <li><a href="about.html"><i class="fas fa-info-circle"></i> About</a></li>
+      <li><a href="index.html"><i class="fas fa-shopping-bag"></i> Products</a></li>
+      <li><a href="login.html" id="loginBtn"><i class="fas fa-sign-out-alt"></i> Login</a></li>
+      <li><a href="review.html"><i class="fas fa-star"></i> Reviews</a></li>
+      <li><a href="tracker.html"><i class="fas fa-truck"></i> Track your Order</a></li>
+      <li><a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+    </ul>
+  </div>
+
+  <header>
+    <div class="logo-wrapper">
+      <div class="logo-fallback">A</div>
+      <img src="logo.png" alt="AURELIVA" class="logo-img"
+        onerror="this.style.display='none'; document.querySelector('.logo-fallback').style.display='flex'">
+      <span class="logo-text">AURELIVA</span>
+    </div>
+
+    <div class="nav-buttons">
+      <button onclick="window.location.href='index.html'">
+        <i class="fas fa-shopping-bag"></i> Shop Now
+      </button>
+      <button class="dark-mode-toggle" id="darkModeToggle">
+        <i class="fas fa-moon"></i> Theme
+      </button>
+    </div>
+  </header>
+
+  <div class="slider-container">
+    <div class="slider" id="mainSlider">
+      <div class="slide">
+        <a href="index.html">
+          <img src="slide 2.jpg" alt="Luxury Products">
+        </a>
+      </div>
+      <div class="slide">
+        <a href="index.html">
+          <img src="slide 3.png" alt="Exclusive Offers">
+        </a>
+      </div>
+      <div class="slide">
+        <a href="index.html">
+          <img src="slide 6.jpg" alt="New Arrivals">
+        </a>
+      </div>
+      <div class="slide">
+        <a href="index.html">
+          <img src="slide 5.jpg" alt="Premium Collection">
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="slider-nav">
+    <div class="slider-arrow" id="prevSlide"><i class="fas fa-chevron-left"></i></div>
+    <div class="slide-counter"><span id="currentSlide">1</span>/4</div>
+    <div class="slider-dots" id="sliderDots"></div>
+    <div class="slider-arrow" id="nextSlide"><i class="fas fa-chevron-right"></i></div>
+  </div>
+
+  <!-- Dashboard Cards Section -->
+  <div class="dashboard-grid">
+    <div class="dashboard-card">
+      <div class="card-header">
+        <div class="card-icon">
+          <i class="fas fa-users"></i>
+        </div>
+        <h3 class="card-title">Customers</h3>
+      </div>
+      <div class="card-value">214</div>
+      <p class="card-text">+12% from last month</p>
+    </div>
+    <div class="dashboard-card">
+      <div class="card-header">
+        <div class="card-icon">
+          <i class="fas fa-shopping-bag"></i>
+        </div>
+        <h3 class="card-title">Orders</h3>
+      </div>
+      <div class="card-value">173</div>
+      <p class="card-text">+8% from last month</p>
+    </div>
+    <div class="dashboard-card">
+      <div class="card-header">
+        <div class="card-icon">
+          <i class="fas fa-rupee-sign"></i>
+        </div>
+        <h3 class="card-title">Revenue</h3>
+      </div>
+      <div class="card-value">₹2,40,000+</div>
+      <p class="card-text">+15% from last month</p>
+    </div>
+  </div>
+
+  <section class="about">
+    <h2>About Us</h2>
+    <p>
+      Aureliva has been providing the best deals and products to customers worldwide since 2023.
+      With our focus on quality, customer satisfaction, and innovation, we strive to make shopping smarter and simpler.
+    </p>
+    <p>
+      We aim to bring you the latest gadgets, fashion, home appliances, and more—all at unbeatable prices.
+      Our dedicated team works tirelessly to curate top-notch products while ensuring a seamless shopping experience
+      from browsing to checkout.
+    </p>
+  </section>
+
+  <section class="reviews">
+    <h2>Customer Reviews</h2>
+    <div class="review-container">
+      <div class="review">
+        <img src="https://randomuser.me/api/portraits/med/women/65.jpg" alt="Sakshi">
+        <h4>Sakshi Chauhan</h4>
+        <div class="stars">★★★★★</div>
+        <p>"Aureliva always delivers top-notch quality — it's my first choice for premium buys."</p>
+      </div>
+      <div class="review">
+        <img src="mukesh sharma.jpg" alt="Mukesh">
+        <h4>Mukesh Sharma</h4>
+        <div class="stars">★★★★★</div>
+        <p>"Impeccable service and fast shipping. The attention to detail is what sets Aureliva apart."</p>
+      </div>
+      <div class="review">
+        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Hetvi">
+        <h4>Hetvi Agraval</h4>
+        <div class="stars">★★★★★</div>
+        <p>"Fantastic service and top-quality products! Aureliva exceeds all expectations with their premium
+          selections."</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-container">
+      <div class="footer-top">
+        <div class="footer-brand">
+          <div class="logo-container">
+            <img src="logo.png" alt="AURELIVA">
+            <div class="logo-text">AURE<span>LIVA</span></div>
+          </div>
+          <p class="brand-tagline">Curated luxury for the discerning few</p>
+          <div class="social-links">
+            <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+            <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="copyright">
+      &copy; 2023 AURELIVA. All rights reserved.
+    </div>
+  </footer>
+
+  <div class="modal" id="loginModal">
+    <div class="modal-content">
+      <h3>Login to Aureliva</h3>
+      <input type="email" id="email" placeholder="Email" required>
+      <input type="password" id="password" placeholder="Password" required>
+      <button onclick="loginUser()">Login</button>
+    </div>
+  </div>
+
+  <script>
+    // Hamburger menu functionality
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const sideMenu = document.getElementById('sideMenu');
+
+    hamburgerBtn.addEventListener('click', () => {
+      document.body.classList.toggle('menu-open');
+      sideMenu.classList.toggle('active');
+    });
+
+    // Close menu when clicking on a link
+    const menuLinks = document.querySelectorAll('.menu-content a');
+    menuLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        document.body.classList.remove('menu-open');
+        sideMenu.classList.remove('active');
+      });
+    });
+
+    // Logout functionality
+    document.getElementById('logoutBtn').addEventListener('click', (e) => {
+      e.preventDefault();
+      localStorage.removeItem('shopSmartUser');
+      window.location.href = 'login.html';
+    });
+
+    // Slider functionality
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const slider = document.getElementById('mainSlider');
+    const dotsContainer = document.getElementById('sliderDots');
+    const currentSlideDisplay = document.getElementById('currentSlide');
+
+    // Create dots
+    slides.forEach((_, index) => {
+      const dot = document.createElement('div');
+      dot.classList.add('slider-dot');
+      if (index === 0) dot.classList.add('active');
+      dot.addEventListener('click', () => goToSlide(index));
+      dotsContainer.appendChild(dot);
+    });
+
+    // Update slider position
+    function updateSlider() {
+      slider.style.transform = `translateX(-${currentSlide * 25}%)`;
+      currentSlideDisplay.textContent = currentSlide + 1;
+
+      // Update dots
+      document.querySelectorAll('.slider-dot').forEach((dot, index) => {
+        dot.classList.toggle('active', index === currentSlide);
+      });
+    }
+
+    // Navigation functions
+    function goToSlide(slideIndex) {
+      currentSlide = slideIndex;
+      updateSlider();
+    }
+
+    document.getElementById('nextSlide').addEventListener('click', () => {
+      currentSlide = (currentSlide + 1) % slides.length;
+      updateSlider();
+    });
+
+    document.getElementById('prevSlide').addEventListener('click', () => {
+      currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+      updateSlider();
+    });
+
+    // Auto-slide
+    let slideInterval = setInterval(() => {
+      currentSlide = (currentSlide + 1) % slides.length;
+      updateSlider();
+    }, 5000);
+
+    // Pause on hover
+    slider.addEventListener('mouseenter', () => clearInterval(slideInterval));
+    slider.addEventListener('mouseleave', () => {
+      slideInterval = setInterval(() => {
+        currentSlide = (currentSlide + 1) % slides.length;
+        updateSlider();
+      }, 5000);
+    });
+
+    // Dark mode toggle
+    const darkModeToggle = document.getElementById('darkModeToggle');
+    darkModeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('dark');
+      localStorage.setItem('darkMode', document.body.classList.contains('dark'));
+
+      const icon = darkModeToggle.querySelector('i');
+      if (document.body.classList.contains('dark')) {
+        icon.classList.remove('fa-moon');
+        icon.classList.add('fa-sun');
+      } else {
+        icon.classList.remove('fa-sun');
+        icon.classList.add('fa-moon');
+      }
+    });
+
+    if (localStorage.getItem('darkMode') === 'true') {
+      document.body.classList.add('dark');
+      const icon = darkModeToggle.querySelector('i');
+      icon.classList.remove('fa-moon');
+      icon.classList.add('fa-sun');
+    }
+  </script>
+</body>
+</html>
